@@ -1,0 +1,116 @@
+
+@model UMR.Requestor.Models.Request
+@{
+    ViewData["Title"] = "Add Request";
+}
+<form asp-action="Add" method="post" class="container-fluid">
+    @{
+        ViewData["Title"] = "Request Form";
+    }
+
+    <h2>Request Form</h2>
+
+    <form method="post">
+        <div>
+            <label>Title/Topic</label>
+            <input type="text" name="Title" class="form-control" />
+        </div>
+
+        <div>
+            <label>Description</label>
+            <textarea name="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div>
+            <label>Why is this Needed?</label>
+            <textarea name="WhyNeeded" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div>
+            <label>PIPP</label>
+            <input type="text" name="PIPP" class="form-control" />
+        </div>
+
+        <div>
+            <label>User Story</label>
+            <input type="text" name="UserStory" class="form-control" />
+        </div>
+
+        <div>
+            <label>IT Install Date</label>
+            <input type="date" name="InstallDate" class="form-control" />
+        </div>
+
+        <div>
+            <label>Ownership</label>
+            <select name="Ownership" class="form-control">
+                <option>Capital</option>
+                <option>Garnet</option>
+                <option>Nexus</option>
+                <option>Emerald</option>
+                <option>Business</option>
+                <option>Mahesh</option>
+                <option>Onbase</option>
+                <option>Paul S.</option>
+                <option>Not Garnett</option>
+                <option>Capital Roadmap 2026</option>
+            </select>
+        </div>
+
+        <div>
+            <label>SME</label>
+            <select name="SME" class="form-control">
+                <option>-- Select SME --</option>
+                <!-- Add SME options here -->
+            </select>
+        </div>
+
+        <div>
+            <label>Notes</label>
+            <textarea name="Notes" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div>
+            <label>Status</label>
+            <select name="Status" class="form-control">
+                <option>Not Started</option>
+                <option>On Garnet</option>
+                <option>Prioritization</option>
+                <option>In Process</option>
+                <option>Install Date Assigned</option>
+                <option>New</option>
+                <option>Completed</option>
+                <option>Pending</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Priority Ranking</label>
+            <input type="text" name="PriorityRanking" class="form-control" />
+        </div>
+
+        <div>
+            <label>Contingency</label>
+            <textarea name="Contingency" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div>
+            <label>Risk</label>
+            <textarea name="Risk" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div>
+            <label>Blue Chip?</label>
+            <textarea name="BlueChip" class="form-control" rows="3"></textarea>
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+            
+        
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

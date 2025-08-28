@@ -1,0 +1,94 @@
+
+@model IEnumerable<UMR.Requestor.Models.Request>
+@{
+    ViewData["Title"] = "All Request";
+}
+<div class="card">
+    <div class="card-header">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-2">
+                <label class="form-label">Project No</label>
+                <input name="projectNo" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Project Status</label>
+                <select name="status" class="form-select">
+                    <option value="">Select</option>
+                    <option>New</option>
+                    <option>PLC_Pending</option>
+                    <option>IT_Sizing_Complete</option>
+                    <option>Complete</option>
+                    <option>Cancelled</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Requestor</label>
+                <input name="requestor" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Impacted IT System</label>
+                <select name="system" class="form-select">
+                    <option value="">Select</option>
+                    <option>CPS</option>
+                    <option>Web Portal</option>
+                    <option>OnBase</option>
+                    <option>EDI</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Business Area</label>
+                <select name="area" class="form-select">
+                    <option value="">Select</option>
+                    <option>Call/Claims</option>
+                    <option>Billing</option>
+                    <option>Treasury</option>
+                    <option>Case Install</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Project Title</label>
+                <input name="title" class="form-control" />
+            </div>
+            <div class="col-12 mt-2 d-flex gap-2">
+                <button class="btn btn-success"><span class="me-1">🔍</span>Search</button>
+                <a class="btn btn-outline-secondary" href="/Requests/All">Clear</a>
+            </div>
+        </form>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Proj. #</th>
+                    <th>Project Title</th>
+                    <th>Project Status</th>
+                    <th>Impacted IT System</th>
+                    <th>Business Area</th>
+                    <th>Type</th>
+                    <th>Requestor</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>@r.ProjectNo</td>
+                        <td>@r.ProjectTitle</td>
+                        <td>@r.ProjectStatus</td>
+                        <td>@r.ImpactedSystem</td>
+                        <td>@r.BusinessArea</td>
+                        <td>@r.TypeOfRequest</td>
+                        <td>@r.Requestor</td>
+                        <td>@r.CreatedDate.ToLocalTime().ToString("d")</td>
+                        <td>
+                            <a class="btn btn-sm btn-warning">Update</a>
+                            <a class="btn btn-sm btn-info text-white">View Note</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
