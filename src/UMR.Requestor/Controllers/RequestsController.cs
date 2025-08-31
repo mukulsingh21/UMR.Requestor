@@ -40,11 +40,10 @@ namespace UMR.Requestor.Controllers
         public IActionResult All(string? projectNo, string? status, string? area, string? system, string? title)
         {
             var items = _repo.GetAll();
-            if (!string.IsNullOrWhiteSpace(projectNo)) items = items.Where(x => x.ProjectNo.Contains(projectNo, StringComparison.OrdinalIgnoreCase));
             if (!string.IsNullOrWhiteSpace(title)) items = items.Where(x => x.ProjectTitle.Contains(title, StringComparison.OrdinalIgnoreCase));
             if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<ProjectStatus>(status, out var s)) items = items.Where(x => x.ProjectStatus == s);
-            if (!string.IsNullOrWhiteSpace(area)) items = items.Where(x => string.Equals(x.BusinessArea, area, StringComparison.OrdinalIgnoreCase));
-            if (!string.IsNullOrWhiteSpace(system)) items = items.Where(x => string.Equals(x.ImpactedSystem, system, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrWhiteSpace(area)) items = items.Where(x => string.Equals(x.Ownership, area, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrWhiteSpace(system)) items = items.Where(x => string.Equals(x.SME, system, StringComparison.OrdinalIgnoreCase));
             return View(items);
         }
     }

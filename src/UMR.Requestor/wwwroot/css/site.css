@@ -3,6 +3,6 @@ body { background-color: #f8f9fa; }
 #sidebar { width: 240px; min-height: 100vh; }
 #sidebar .nav-link { color: #333; border-radius: .5rem; }
 #sidebar .nav-link:hover { background-color: #e9ecef; }
-.logo-box { width: 28px; height: 28px; background:#0d6efd; color:#fff; display:flex; align-items:center; justify-content:center; border-radius:.35rem; font-weight:700; }
+.logo-box { width: 28px; height: 28px; display:flex; align-items:center; justify-content:center; border-radius:.35rem; font-weight:700; }
 .card.mini-card { border: none; }
 .card.mini-card .card-body { min-height: 88px; }

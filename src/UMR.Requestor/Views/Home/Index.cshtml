@@ -12,7 +12,7 @@
                         <div class="fw-semibold">All Request</div>
                         <div class="small text-muted">Total Count : @Model.TotalCount</div>
                     </div>
-                    <canvas id="allRequestsChart" height="140"></canvas>
+                    <canvas id="allRequestsChart" height="120"></canvas>
                 </div>
             </div>
         </div>
@@ -20,10 +20,25 @@
             <div class="card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
-                        <div class="fw-semibold">Business Areas Request</div>
+                        <div class="fw-semibold">Ownership</div>
+                        <div>
+                            <label>Ownership</label>
+                            <select name="Ownership" class="form-control">
+                                <option>Capital</option>
+                                <option>Garnet</option>
+                                <option>Nexus</option>
+                                <option>Emerald</option>
+                                <option>Business</option>
+                                <option>Mahesh</option>
+                                <option>Onbase</option>
+                                <option>Paul S.</option>
+                                <option>Not Garnett</option>
+                                <option>Capital Roadmap 2026</option>
+                            </select>
+                        </div>
                         <div class="small text-muted">Total Count : @Model.BusinessAreaCounts.Values.Sum()</div>
                     </div>
-                    <canvas id="businessAreaChart" height="140"></canvas>
+                    <canvas id="businessAreaChart" height="20"></canvas>
                 </div>
             </div>
         </div>
@@ -60,9 +75,25 @@
 
     const baLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BusinessAreaCounts.Keys));
     const baValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BusinessAreaCounts.Values));
-    new Chart(document.getElementById('businessAreaChart'), {
-        type: 'doughnut', data: { labels: baLabels, datasets: [{ data: baValues, backgroundColor: ['#0d6efd','#20c997','#6610f2','#fd7e14','#6c757d'] }] },
-        options: { cutout: '65%' }
-    });
+                   new Chart(document.getElementById('businessAreaChart'), {
+          type: 'doughnut',
+          data: {
+            labels: baLabels,
+            datasets: [{
+              data: baValues,
+              backgroundColor: ['#0d6efd','#20c997','#6610f2','#fd7e14','#6c757d']
+            }]
+          },
+          options: {
+            cutout: '65%',
+            rotation: -90, // Start from the top
+            circumference: 180, // Show only half the doughnut
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
 </script>
 }

@@ -59,29 +59,40 @@
         <table class="table table-hover align-middle">
             <thead>
                 <tr>
-                    <th>Proj. #</th>
-                    <th>Project Title</th>
-                    <th>Project Status</th>
-                    <th>Impacted IT System</th>
-                    <th>Business Area</th>
-                    <th>Type</th>
-                    <th>Requestor</th>
-                    <th>Created</th>
-                    <th>Action</th>
+                    <th>Title/Topic </th>
+                    <th>Description</th>
+                    <th>Why is this Needed?</th>
+                    <th>PIPP</th>
+                    <th>User Story</th>
+                    <th>IT InstallDate</th>
+                    <th>Ownership</th>
+                    <th>SME</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                    <th>Priority Ranking</th>
+                    <th>Contingency</th>
+                    <th>Risk</th>
+                    <th>Blue Chip?</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var r in Model)
                 {
                     <tr>
-                        <td>@r.ProjectNo</td>
                         <td>@r.ProjectTitle</td>
+                        <td>@r.Description</td>
+                        <td>@r.Reason</td>
+                        <td>@r.PIPP</td>
+                        <td>@r.UserStory</td>
+                        <td>@r.ITInstallDate.ToLocalTime().ToString("d")</td>
+                        <td>@r.Ownership</td>
+                        <td>@r.SME</td>
+                        <td>@r.Notes</td>
                         <td>@r.ProjectStatus</td>
-                        <td>@r.ImpactedSystem</td>
-                        <td>@r.BusinessArea</td>
-                        <td>@r.TypeOfRequest</td>
-                        <td>@r.Requestor</td>
-                        <td>@r.CreatedDate.ToLocalTime().ToString("d")</td>
+                        <td>@r.PriorityRanking</td>
+                        <td>@r.Contingency</td>
+                        <td>@r.Risk</td>
+                        <td>@r.BlueChip</td>
                         <td>
                             <a class="btn btn-sm btn-warning">Update</a>
                             <a class="btn btn-sm btn-info text-white">View Note</a>
