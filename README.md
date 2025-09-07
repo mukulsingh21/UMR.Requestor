@@ -1,4 +1,4 @@
-Script for creating DB and tables.
+
 USE [UMRRequestor]
 GO
 
