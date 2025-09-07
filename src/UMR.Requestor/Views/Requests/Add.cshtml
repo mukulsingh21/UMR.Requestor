@@ -42,7 +42,18 @@
         </div>
         <div class="mb-3">
             <label asp-for="Ownership" class="form-label"></label>
-            <input asp-for="Ownership" class="form-control" />
+            <select asp-for="Ownership" class="form-select">
+                <option value="Capital">Capital</option>
+                <option value="Garnet">Garnet</option>
+                <option value="Nexus">NotStarted</option>
+                <option value="EmeraId">EmeraId</option>
+                <option value="Business">Business</option>
+                <option value="Mahesh">Mahesh</option>
+                <option value="Onbase">Onbase</option>
+                <option value="Paul S">Paul S</option>
+                <option value="Not Garnett">Not Garnett</option>
+                <option value="Capital Roadmap 2026">Capital Roadmap 2026</option>
+            </select>
             <span asp-validation-for="Ownership" class="text-danger"></span>
         </div>
         <div class="mb-3">
@@ -59,10 +70,13 @@
             <label asp-for="ProjectStatus" class="form-label"></label>
             <select asp-for="ProjectStatus" class="form-select">
                 <option value="New">New</option>
-                <option value="PLC_Pending">PLC_Pending</option>
-                <option value="IT_Sizing_Complete">IT_Sizing_Complete</option>
+                <option value="Pending">Pending</option>
+                <option value="NotStarted">NotStarted</option>
+                <option value="OnGarnet">OnGarnet</option>
+                <option value="Prioritization">Prioritization</option>
+                <option value="InProcess">InProcess</option>
+                <option value="InstallDateAssigned">InstallDateAssigned</option>
                 <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
             </select>
             <span asp-validation-for="ProjectStatus" class="text-danger"></span>
         </div>
