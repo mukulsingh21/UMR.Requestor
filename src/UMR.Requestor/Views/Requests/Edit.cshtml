@@ -1,15 +1,12 @@
-
 @model UMR.Requestor.Models.Request
 @{
-    ViewData["Title"] = "Add Request";
-}
-
-@{
-    ViewData["Title"] = "Add Request";
+    ViewData["Title"] = "Edit Request";
 }
 <div class="container mt-4">
-    <h2>Add New Request</h2>
-    <form asp-action="Add" method="post">
+    <h2>Edit Request</h2>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="RequestId" />
+        <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
         <div class="mb-3">
             <label asp-for="ProjectTitle" class="form-label"></label>
             <input asp-for="ProjectTitle" class="form-control" />
@@ -86,11 +83,10 @@
             <input asp-for="BlueChip" class="form-control" />
             <span asp-validation-for="BlueChip" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="All" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-

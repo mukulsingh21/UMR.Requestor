@@ -7,6 +7,8 @@ namespace UMR.Requestor.Models
 {
     public class Request
     {
+        [Required]
+        public int RequestId { get; set; }
         /// <summary>
         /// Project title
         /// </summary>
@@ -14,17 +16,17 @@ namespace UMR.Requestor.Models
         public string ProjectTitle { get; set; } = string.Empty;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public ProjectStatus ProjectStatus { get; set; } = ProjectStatus.New;
-        
+        public ProjectStatus ProjectStatus { get; set; }
+
         public string? Description { get; set; }
         public string? Reason { get; set; }
         public string? PIPP { get; set; }
         public string? UserStory { get; set; }
         public DateTime ITInstallDate { get; set; }
         public string? Ownership { get; set; }
-        public string? SME { get; set; }
+        public string? SMEId { get; set; }
         public string? Notes { get; set; }
         public string? PriorityRanking { get; set; }
         public string? Contingency { get; set; }

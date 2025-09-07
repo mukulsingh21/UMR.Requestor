@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -10,27 +9,14 @@ namespace UMR.Requestor.Controllers
     public class RequestsController : Controller
     {
         private readonly IRequestRepository _repo;
-        public RequestsController(IRequestRepository repo) => _repo = repo;
-
-        [HttpGet]
-        public IActionResult Add() => View(new Request());
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Add(Request model)
+        public RequestsController(IRequestRepository repo)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            _repo.Add(model);
-            TempData["Message"] = "Request saved.";
-            return RedirectToAction(nameof(My));
+            _repo = repo;
         }
 
-        [HttpGet]
         public IActionResult My(string? requestor)
         {
-            requestor ??= "Mukul Singh"; // default demo
+            requestor ??= "External"; // default demo
             var items = _repo.GetByRequestor(requestor);
             ViewBag.Requestor = requestor;
             return View(items);
@@ -43,8 +29,65 @@ namespace UMR.Requestor.Controllers
             if (!string.IsNullOrWhiteSpace(title)) items = items.Where(x => x.ProjectTitle.Contains(title, StringComparison.OrdinalIgnoreCase));
             if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<ProjectStatus>(status, out var s)) items = items.Where(x => x.ProjectStatus == s);
             if (!string.IsNullOrWhiteSpace(area)) items = items.Where(x => string.Equals(x.Ownership, area, StringComparison.OrdinalIgnoreCase));
-            if (!string.IsNullOrWhiteSpace(system)) items = items.Where(x => string.Equals(x.SME, system, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrWhiteSpace(system)) items = items.Where(x => string.Equals(x.SMEId, system, StringComparison.OrdinalIgnoreCase));
             return View(items);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id, string returnUrl)
+        {
+            var request = _repo.GetById(id);
+            if (request == null)
+                return NotFound();
+
+            ViewBag.ReturnUrl = returnUrl;
+            return View(request);
+        }
+
+        [HttpGet]
+        public IActionResult GetNote(int id)
+        {
+            var request = _repo.GetById(id);
+            if (request == null)
+                return NotFound();
+            return Content(request.Notes ?? "No notes available.");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Edit")]
+        public IActionResult EditPost(Request model, string returnUrl)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            _repo.Update(model);
+            TempData["Message"] = "Request updated.";
+            // Redirect to returnUrl if provided, otherwise to All
+            return !string.IsNullOrEmpty(returnUrl)
+                ? Redirect(returnUrl)
+                : RedirectToAction(nameof(All));
+        }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View(new Request());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Add(Request model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View (model);
+            }
+
+            _repo.Add(model);
+
+            return RedirectToAction(nameof(All));
+        }
+
     }
 }

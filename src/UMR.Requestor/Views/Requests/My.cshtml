@@ -6,15 +6,12 @@
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
         <div class="fw-semibold">My Request List</div>
-        <form method="get" class="d-flex gap-2">
-            <input type="text" name="requestor" value="@ViewBag.Requestor" class="form-control" placeholder="Requestor name" />
-            <button class="btn btn-success">Search</button>
-        </form>
     </div>
     <div class="card-body table-responsive">
-        <table class="table table-hover align-middle">
+        <table id="requestsGrid" class="table table-hover align-middle">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Title/Topic </th>
                     <th>Description</th>
                     <th>Why is this Needed?</th>
@@ -29,30 +26,32 @@
                     <th>Contingency</th>
                     <th>Risk</th>
                     <th>Blue Chip?</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var r in Model)
                 {
                     <tr>
-                        <td>@r.ProjectTitle</td>
-                        <td>@r.Description</td>
-                        <td>@r.Reason</td>
-                        <td>@r.PIPP</td>
-                        <td>@r.UserStory</td>
-                        <td>@r.ITInstallDate.ToLocalTime().ToString("d")</td>
-                        <td>@r.Ownership</td>
-                        <td>@r.SME</td>
-                        <td>@r.Notes</td>
-                        <td>@r.ProjectStatus</td>
-                        <td>@r.PriorityRanking</td>
-                        <td>@r.Contingency</td>
-                        <td>@r.Risk</td>
-                        <td>@r.BlueChip</td>
+                        <td class="text-truncate ellipsis-col">@r.RequestId</td>
+                        <td class="text-truncate ellipsis-col">@r.ProjectTitle</td>
+                        <td class="text-truncate ellipsis-col">@r.Description</td>
+                        <td class="text-truncate ellipsis-col">@r.Reason</td>
+                        <td class="text-truncate ellipsis-col">@r.PIPP</td>
+                        <td class="text-truncate ellipsis-col">@r.UserStory</td>
+                        <td class="text-truncate ellipsis-col">@r.ITInstallDate.ToLocalTime().ToString("d")</td>
+                        <td class="text-truncate ellipsis-col">@r.Ownership</td>
+                        <td class="text-truncate ellipsis-col">@r.SMEId</td>
+                        <td class="text-truncate ellipsis-col">@r.Notes</td>
+                        <td class="text-truncate ellipsis-col">@r.ProjectStatus</td>
+                        <td class="text-truncate ellipsis-col">@r.PriorityRanking</td>
+                        <td class="text-truncate ellipsis-col">@r.Contingency</td>
+                        <td class="text-truncate ellipsis-col">@r.Risk</td>
+                        <td class="text-truncate ellipsis-col">@r.BlueChip</td>
 
                          <td>
-                            <a class="btn btn-sm btn-warning">Update</a>
-                            <a class="btn btn-sm btn-info text-white">Add Note</a>
+                            @* <a class="btn btn-sm btn-warning" href="/Requests/Edit/@r.RequestId">Update</a> *@
+                            <a class="btn btn-sm btn-warning" asp-controller="Requests" asp-action="Edit" asp-route-id="@r.RequestId" asp-route-returnUrl="@Url.Action("My")">Edit</a>
                         </td>
                     </tr>
                 }
@@ -60,3 +59,30 @@
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            initRequestsGrid();
+
+            $('#dataModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var request = button.data('request');
+                var modal = $(this);
+                if (request) {
+                    var html = '<table class="table table-bordered table-sm">';
+                    for (var key in request) {
+                        if (request.hasOwnProperty(key)) {
+                            html += '<tr><th>' + key + '</th><td>' + request[key] + '</td></tr>';
+                        }
+                    }
+                    html += '</table>';
+                    modal.find('#dataModalBody').html(html);
+                } else {
+                    modal.find('#dataModalBody').text('No data available.');
+                }
+            });
+        });
+    </script>
+}
+

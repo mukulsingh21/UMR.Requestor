@@ -8,8 +8,12 @@ namespace UMR.Requestor.Services
     {
         IEnumerable<Request> GetAll();
         IEnumerable<Request> GetByRequestor(string requestor);
+        Request GetById(int id);
         void Add(Request request);
-        (int total, int completed, int pending, int rejected) GetStatusSummary();
+        StatusSummary GetStatusSummary();
         Dictionary<string, int> GetBusinessAreaCounts();
+
+    void Update(Request request);
+        Task<bool> Delete(int requestId);
     }
 }
