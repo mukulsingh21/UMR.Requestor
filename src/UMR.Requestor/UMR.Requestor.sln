@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UMR.Requestor", "UMR.Requestor.csproj", "{42510DB6-F30C-BF95-F89C-6FE0C1D69652}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42510DB6-F30C-BF95-F89C-6FE0C1D69652}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42510DB6-F30C-BF95-F89C-6FE0C1D69652}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42510DB6-F30C-BF95-F89C-6FE0C1D69652}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42510DB6-F30C-BF95-F89C-6FE0C1D69652}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {04EA5A4F-9955-4445-BCF5-BF2F92DB24B8}
+	EndGlobalSection
+EndGlobal

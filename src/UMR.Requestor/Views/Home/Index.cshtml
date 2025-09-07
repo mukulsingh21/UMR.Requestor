@@ -1,4 +1,3 @@
-
 @model UMR.Requestor.ViewModels.DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
@@ -12,7 +11,7 @@
                         <div class="fw-semibold">All Request</div>
                         <div class="small text-muted">Total Count : @Model.TotalCount</div>
                     </div>
-                    <canvas id="allRequestsChart" height="120"></canvas>
+                    <canvas id="allRequestsChart" height="100"></canvas>
                 </div>
             </div>
         </div>
@@ -20,7 +19,7 @@
             <div class="card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
-                        <div class="fw-semibold">Ownership</div>
+                        @* <div class="fw-semibold">Ownership</div>
                         <div>
                             <label>Ownership</label>
                             <select name="Ownership" class="form-control">
@@ -35,7 +34,7 @@
                                 <option>Not Garnett</option>
                                 <option>Capital Roadmap 2026</option>
                             </select>
-                        </div>
+                        </div> *@
                         <div class="small text-muted">Total Count : @Model.BusinessAreaCounts.Values.Sum()</div>
                     </div>
                     <canvas id="businessAreaChart" height="20"></canvas>
@@ -62,38 +61,16 @@
     </div>
 </div>
 
-@section Scripts{
+@section Scripts {
+<script src="~/js/dashboard-charts.js"></script>
 <script>
-    const allData = {
-        labels: ['Completed','Pending','Reject'],
-        datasets: [{
-            data: [@Model.Completed, @Model.Pending, @Model.Rejected],
-            backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
-        }]
-    };
-    new Chart(document.getElementById('allRequestsChart'), { type: 'doughnut', data: allData });
-
-    const baLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BusinessAreaCounts.Keys));
-    const baValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BusinessAreaCounts.Values));
-                   new Chart(document.getElementById('businessAreaChart'), {
-          type: 'doughnut',
-          data: {
-            labels: baLabels,
-            datasets: [{
-              data: baValues,
-              backgroundColor: ['#0d6efd','#20c997','#6610f2','#fd7e14','#6c757d']
-            }]
-          },
-          options: {
-            cutout: '65%',
-            rotation: -90, // Start from the top
-            circumference: 180, // Show only half the doughnut
-            plugins: {
-              legend: {
-                position: 'bottom'
-              }
-            }
-          }
-        });
+    const dashboardCharts = new DashboardCharts(
+        @Model.Completed,
+        @Model.Pending,
+        @Model.Rejected,
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BusinessAreaCounts.Keys)),
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BusinessAreaCounts.Values))
+    );
+    dashboardCharts.renderAll();
 </script>
 }
