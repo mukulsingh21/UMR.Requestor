@@ -5,19 +5,22 @@ using Microsoft.Extensions.Hosting;
 using UMR.Requestor.Services;
 using Microsoft.EntityFrameworkCore;
 using UMR.Requestor.Data;
+using UMR.Requestor.Middleware;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
+        Console.WriteLine("Executing Main program...");
         builder.Services.AddControllersWithViews();
         builder.Services.AddScoped<IRequestRepository, RequestRepository>();
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("UMRDBConnection")));
 
         var app = builder.Build();
+
+
 
         if (!app.Environment.IsDevelopment())
         {
@@ -26,6 +29,7 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseMiddleware<GlobalExceptionMiddleware>();
         app.UseStaticFiles();
         app.UseRouting();
 

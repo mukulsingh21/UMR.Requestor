@@ -1,3 +1,4 @@
+@using System.Text.Json
 @model UMR.Requestor.ViewModels.DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
@@ -11,7 +12,9 @@
                         <div class="fw-semibold">All Request</div>
                         <div class="small text-muted">Total Count : @Model.TotalCount</div>
                     </div>
-                    <canvas id="allRequestsChart" height="100"></canvas>
+                    <div style="height:300px;">
+                        <canvas id="allRequestsChart" style="height:100%!important;width:100%!important;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,7 +40,9 @@
                         </div> *@
                         <div class="small text-muted">Total Count : @Model.BusinessAreaCounts.Values.Sum()</div>
                     </div>
-                    <canvas id="businessAreaChart" height="20"></canvas>
+                    <div style="height:220px;">
+                        <canvas id="businessAreaChart" style="height:100%!important;width:100%!important;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,15 +67,209 @@
 </div>
 
 @section Scripts {
-<script src="~/js/dashboard-charts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const dashboardCharts = new DashboardCharts(
-        @Model.Completed,
-        @Model.Pending,
-        @Model.Rejected,
-        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BusinessAreaCounts.Keys)),
-        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BusinessAreaCounts.Values))
-    );
-    dashboardCharts.renderAll();
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            console.log('Initializing dashboard...');
+
+            // Initialize chart data
+            const chartData = {
+                new: @Model.New,
+                notStarted: @Model.NotStarted,
+                onGarnet: @Model.OnGarnet,
+                prioritization: @Model.Prioritization,
+                inProcess: @Model.InProcess,
+                installDateAssigned: @Model.InstallDateAssigned,
+                completed: @Model.Completed,
+                pending: @Model.Pending,
+                businessAreaLabels: @Html.Raw(JsonSerializer.Serialize(Model.BusinessAreaCounts.Keys)),
+                businessAreaValues: @Html.Raw(JsonSerializer.Serialize(Model.BusinessAreaCounts.Values))
+            };
+            console.log('Chart data:', chartData);
+
+            // Helper function to destroy existing chart
+            function destroyExistingChart(canvasId) {
+                const canvas = document.getElementById(canvasId);
+                if (canvas) {
+                    const existingChart = Chart.getChart(canvas);
+                    if (existingChart) {
+                        existingChart.destroy();
+                    }
+                }
+            }
+
+            // Render All Requests Chart
+            try {
+                const allRequestsCanvas = document.getElementById('allRequestsChart');
+                if (!allRequestsCanvas) {
+                    console.error('Could not find allRequestsChart canvas element');
+                    return;
+                }
+
+                destroyExistingChart('allRequestsChart');
+
+                const values = [
+                    chartData.new,
+                    chartData.notStarted,
+                    chartData.onGarnet,
+                    chartData.prioritization,
+                    chartData.inProcess,
+                    chartData.installDateAssigned,
+                    chartData.completed,
+                    chartData.pending
+                ].map(x => typeof x === 'number' ? x : 0);
+
+                const allZero = values.every(v => v === 0);
+                let chartDataset, chartLabels, chartColors;
+
+                if (allZero) {
+                    chartLabels = ['No Data'];
+                    chartDataset = [1];
+                    chartColors = ['#e9ecef'];
+                } else {
+                    chartLabels = [
+                        'New',
+                        'Not Started',
+                        'On Garnet',
+                        'Prioritization',
+                        'In Process',
+                        'Install Date Assigned',
+                        'Completed',
+                        'Pending'
+                    ];
+                    chartDataset = values;
+                    chartColors = [
+                        '#0dcaf0',  // bg-info
+                        '#6c757d',  // bg-secondary
+                        '#6f42c1',  // bg-purple
+                        '#6610f2',  // bg-indigo
+                        '#ffc107',  // bg-warning
+                        '#d63384',  // bg-pink
+                        '#198754',  // bg-success
+                        '#dc3545'   // bg-danger
+                    ];
+                }
+
+                console.log('Rendering all requests chart with data:', chartDataset);
+
+                new Chart(allRequestsCanvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            data: chartDataset,
+                            backgroundColor: chartColors
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.formattedValue;
+                                        const total = context.dataset.data.reduce((a, b) => (a || 0) + (b || 0), 0);
+                                        const percentage = total > 0 ? Math.round((context.raw / total) * 100) : 0;
+                                        return `${label}: ${value}${label !== 'No Data' ? ` (${percentage}%)` : ''}`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '60%',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            animateRotate: true,
+                            animateScale: true
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error rendering all requests chart:', error);
+            }
+
+            // Render Business Area Chart
+            try {
+                const businessAreaCanvas = document.getElementById('businessAreaChart');
+                if (!businessAreaCanvas) {
+                    console.error('Could not find businessAreaChart canvas element');
+                    return;
+                }
+
+                destroyExistingChart('businessAreaChart');
+
+                console.log('Rendering business area chart with data:', {
+                    labels: chartData.businessAreaLabels,
+                    values: chartData.businessAreaValues
+                });
+
+                new Chart(businessAreaCanvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: chartData.businessAreaLabels,
+                        datasets: [{
+                            data: chartData.businessAreaValues,
+                            backgroundColor: [
+                                '#0d6efd',  // primary
+                                '#20c997',  // teal
+                                '#6610f2',  // purple
+                                '#fd7e14',  // orange
+                                '#6c757d',  // secondary
+                                '#0dcaf0',  // info
+                                '#198754',  // success
+                                '#dc3545',  // danger
+                                '#6f42c1',  // indigo
+                                '#d63384'   // pink
+                            ]
+                        }]
+                    },
+                    options: {
+                        cutout: '65%',
+                        rotation: -90,
+                        circumference: 180,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 10
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.formattedValue;
+                                        const total = context.dataset.data.reduce((a, b) => (a || 0) + (b || 0), 0);
+                                        const percentage = total > 0 ? Math.round((context.raw / total) * 100) : 0;
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            animateRotate: true,
+                            animateScale: true
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error rendering business area chart:', error);
+            }
+
+        } catch (error) {
+            console.error('Error initializing dashboard:', error);
+        }
+    });
 </script>
 }

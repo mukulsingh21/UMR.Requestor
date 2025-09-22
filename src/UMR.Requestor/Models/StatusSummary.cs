@@ -5,9 +5,14 @@
     /// </summary>
     public class StatusSummary
     {
-        public int total {  get; set; }
-        public int completed { get; set; }
-        public int pending { get; set; }
-        public int rejected { get; set; }
+        public int Total { get; set; }
+        public int New { get; set; }
+        public int NotStarted { get; set; }
+        public int OnGarnet { get; set; }
+        public int Prioritization { get; set; }
+        public int InProcess { get; set; }
+        public int InstallDateAssigned { get; set; }
+        public int Completed { get; set; }
+        public int Pending { get; set; }
     }
 }

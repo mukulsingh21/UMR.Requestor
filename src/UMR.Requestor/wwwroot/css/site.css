@@ -16,3 +16,29 @@ body {
 .logo-box { width: 28px; height: 28px; display:flex; align-items:center; justify-content:center; border-radius:.35rem; font-weight:700; }
 .card.mini-card { border: none; }
 .card.mini-card .card-body { min-height: 88px; }
+
+/* Custom status background colors */
+.bg-purple {
+    background-color: #6f42c1 !important;
+    color: white;
+}
+
+.bg-indigo {
+    background-color: #6610f2 !important;
+    color: white;
+}
+
+.bg-pink {
+    background-color: #d63384 !important;
+    color: white;
+}
+
+/* Status card hover effects */
+.mini-card .card-body {
+    transition: transform 0.2s ease-in-out;
+}
+
+.mini-card:hover .card-body {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}

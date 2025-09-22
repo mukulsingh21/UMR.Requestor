@@ -20,13 +20,20 @@ namespace UMR.Requestor.Services
         /// <returns></returns>
         public StatusSummary GetStatusSummary()
         {
-            var statusSummary = new StatusSummary();
             var requestList = _appDbContext.Requests.ToList();
-            statusSummary.total = requestList.Count;
-            statusSummary.completed = requestList.Count(r => r.ProjectStatus == ProjectStatus.Completed);
-            statusSummary.rejected = requestList.Count(r => r.ProjectStatus == ProjectStatus.NotStarted);
-            statusSummary.pending = statusSummary.total - statusSummary.completed - statusSummary.rejected;
-            return statusSummary;
+            
+            return new StatusSummary
+            {
+                Total = requestList.Count,
+                New = requestList.Count(r => r.ProjectStatus == ProjectStatus.New),
+                NotStarted = requestList.Count(r => r.ProjectStatus == ProjectStatus.NotStarted),
+                OnGarnet = requestList.Count(r => r.ProjectStatus == ProjectStatus.OnGarnet),
+                Prioritization = requestList.Count(r => r.ProjectStatus == ProjectStatus.Prioritization),
+                InProcess = requestList.Count(r => r.ProjectStatus == ProjectStatus.InProcess),
+                InstallDateAssigned = requestList.Count(r => r.ProjectStatus == ProjectStatus.InstallDateAssigned),
+                Completed = requestList.Count(r => r.ProjectStatus == ProjectStatus.Completed),
+                Pending = requestList.Count(r => r.ProjectStatus == ProjectStatus.Pending)
+            };
         }
 
         /// <summary>

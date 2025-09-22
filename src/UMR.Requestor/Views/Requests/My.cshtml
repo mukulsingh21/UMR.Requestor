@@ -1,5 +1,6 @@
 
-@model IEnumerable<UMR.Requestor.Models.Request>
+@using UMR.Requestor.Models
+@model IEnumerable<Request>
 @{
     ViewData["Title"] = "My Request";
 }
@@ -43,7 +44,23 @@
                         <td class="text-truncate ellipsis-col">@r.Ownership</td>
                         <td class="text-truncate ellipsis-col">@r.SMEId</td>
                         <td class="text-truncate ellipsis-col">@r.Notes</td>
-                        <td class="text-truncate ellipsis-col">@r.ProjectStatus</td>
+                        <td class="text-truncate ellipsis-col">
+                            @{
+                                var statusClass = r.ProjectStatus switch
+                                {
+                                    ProjectStatus.New => "bg-info",
+                                    ProjectStatus.NotStarted => "bg-secondary",
+                                    ProjectStatus.OnGarnet => "bg-purple",
+                                    ProjectStatus.Prioritization => "bg-indigo",
+                                    ProjectStatus.InProcess => "bg-warning text-dark",
+                                    ProjectStatus.InstallDateAssigned => "bg-pink",
+                                    ProjectStatus.Completed => "bg-success",
+                                    ProjectStatus.Pending => "bg-danger",
+                                    _ => "bg-secondary"
+                                };
+                            }
+                            <span class="badge @statusClass">@r.ProjectStatus</span>
+                        </td>
                         <td class="text-truncate ellipsis-col">@r.PriorityRanking</td>
                         <td class="text-truncate ellipsis-col">@r.Contingency</td>
                         <td class="text-truncate ellipsis-col">@r.Risk</td>
